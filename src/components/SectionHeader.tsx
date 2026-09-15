@@ -43,7 +43,8 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   copy: {
-    gap: 4,
+    gap: 6,
     flex: 1,
+    overflow: 'visible',
   },
 });

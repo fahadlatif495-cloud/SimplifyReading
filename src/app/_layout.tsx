@@ -5,10 +5,12 @@ import { Stack, useRootNavigationState, useRouter, useSegments } from 'expo-rout
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import * as SystemUI from 'expo-system-ui';
-import { useEffect } from 'react';
-import { Platform, StatusBar as RNStatusBar, StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Platform, StatusBar as RNStatusBar, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { AppSplash } from '@/components/AppSplash';
+import { FontsReadyContext } from '@/hooks/useFontsReady';
 import { useAuthReady } from '@/hooks/useAuthReady';
 import { useAppTheme, useIsDarkTheme } from '@/hooks/use-theme';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -20,7 +22,7 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-  useFonts({
+  const [fontsLoaded] = useFonts({
     CormorantGaramond_500Medium_Italic,
     CormorantGaramond_600SemiBold,
     CormorantGaramond_700Bold,
@@ -35,13 +37,11 @@ export default function RootLayout() {
   const segments = useSegments();
   const router = useRouter();
   const navigationState = useRootNavigationState();
+  const [showBrandSplash, setShowBrandSplash] = useState(true);
 
   useEffect(() => {
-    const hide = () => {
-      SplashScreen.hideAsync().catch(() => undefined);
-    };
-    hide();
-    const timeout = setTimeout(hide, 800);
+    SplashScreen.hideAsync().catch(() => undefined);
+    const timeout = setTimeout(() => setShowBrandSplash(false), 1800);
     return () => clearTimeout(timeout);
   }, []);
 
@@ -65,23 +65,30 @@ export default function RootLayout() {
   }, [authReady, isAuthenticated, navigationState?.key, router, segments]);
 
   return (
-    <GestureHandlerRootView style={[styles.flex, { backgroundColor: colors.bg }]}>
-      <StatusBar style={dark ? 'light' : 'dark'} />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: colors.bg },
-          animation: 'fade',
-        }}>
-        <Stack.Screen name="(auth)" />
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="add-book" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
-        <Stack.Screen name="book/[id]" />
-        <Stack.Screen name="reader/[id]" options={{ animation: 'fade' }} />
-        <Stack.Screen name="search" options={{ animation: 'fade' }} />
-        <Stack.Screen name="settings" />
-      </Stack>
-    </GestureHandlerRootView>
+    <FontsReadyContext.Provider value={fontsLoaded}>
+      <GestureHandlerRootView style={[styles.flex, { backgroundColor: colors.bg }]}>
+        <StatusBar style={dark ? 'light' : 'dark'} />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: colors.bg },
+            animation: 'fade',
+          }}>
+          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="add-book" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+          <Stack.Screen name="book/[id]" />
+          <Stack.Screen name="reader/[id]" options={{ animation: 'fade' }} />
+          <Stack.Screen name="search" options={{ animation: 'fade' }} />
+          <Stack.Screen name="settings" />
+        </Stack>
+        {showBrandSplash ? (
+          <View style={StyleSheet.absoluteFill} pointerEvents="auto">
+            <AppSplash />
+          </View>
+        ) : null}
+      </GestureHandlerRootView>
+    </FontsReadyContext.Provider>
   );
 }
 

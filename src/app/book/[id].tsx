@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 36,
-    lineHeight: 40,
+    lineHeight: 48,
   },
   desc: {
     marginTop: 4,

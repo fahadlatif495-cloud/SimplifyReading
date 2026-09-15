@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderRadius: 28,
+    borderRadius: 20,
     borderWidth: 1,
     paddingVertical: 8,
     paddingHorizontal: 6,
@@ -112,8 +112,7 @@ const styles = StyleSheet.create({
   item: {
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 4,
-    paddingVertical: 8,
+    paddingVertical: 4,
     paddingHorizontal: 4,
     minHeight: 52,
   },

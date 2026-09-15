@@ -39,12 +39,12 @@
         {
           "backgroundColor": "#F3EEE4",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 180,
+          "imageWidth": 240,
           "resizeMode": "contain",
           "android": {
             "backgroundColor": "#F3EEE4",
             "image": "./assets/images/splash-icon.png",
-            "imageWidth": 180
+            "imageWidth": 240
           },
           "ios": {
             "backgroundColor": "#F3EEE4",

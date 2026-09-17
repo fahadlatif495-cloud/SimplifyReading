@@ -21,8 +21,10 @@ export default function ReaderScreen() {
   const book = useLibraryStore((state) => state.books.find((item) => item.id === bookId));
   const setCurrentPage = useLibraryStore((state) => state.setCurrentPage);
   const toggleBookmark = useLibraryStore((state) => state.toggleBookmark);
-  const bookmarkedPages = useLibraryStore((state) =>
-    state.bookmarks.filter((item) => item.bookId === bookId).map((item) => item.page),
+  const bookmarks = useLibraryStore((state) => state.bookmarks);
+  const bookmarkedPages = useMemo(
+    () => bookmarks.filter((item) => item.bookId === bookId).map((item) => item.page),
+    [bookmarks, bookId],
   );
   const reader = useSettingsStore((state) => state.reader);
   const setReader = useSettingsStore((state) => state.setReader);

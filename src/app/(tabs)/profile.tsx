@@ -127,7 +127,7 @@ function Stat({ value, label }: { value: number; label: string }) {
 
 const styles = StyleSheet.create({
   content: {
-    gap: Spacing.xl,
+    gap: Spacing.lg,
   },
   email: {
     marginTop: 6,
@@ -138,6 +138,8 @@ const styles = StyleSheet.create({
   },
   stat: {
     gap: 4,
+    alignItems: 'center',
+
   },
   block: {
     gap: 12,

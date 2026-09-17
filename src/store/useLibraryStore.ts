@@ -74,20 +74,21 @@ export const useLibraryStore = create<LibraryState>()(
       },
 
       setCurrentPage: (id, page) => {
-        const now = stamp();
-        set((state) => ({
-          books: state.books.map((book) => {
-            if (book.id !== id) return book;
-            const currentPage = nextPage(book, page);
-            return {
-              ...book,
-              currentPage,
-              status: book.status === 'finished' ? 'finished' : 'reading',
-              updatedAt: now,
-              lastReadAt: now,
-            };
-          }),
-        }));
+        set((state) => {
+          const book = state.books.find((item) => item.id === id);
+          if (!book) return state;
+          const currentPage = nextPage(book, page);
+          const status = book.status === 'finished' ? 'finished' : 'reading';
+          if (book.currentPage === currentPage && book.status === status) return state;
+          const now = stamp();
+          return {
+            books: state.books.map((item) =>
+              item.id === id
+                ? { ...item, currentPage, status, updatedAt: now, lastReadAt: now }
+                : item,
+            ),
+          };
+        });
       },
 
       markFinished: (id) => {
